@@ -6,9 +6,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"power/storage"
 	"strconv"
 	"strings"
+
+	"github.com/recadra/data-collector/storage"
 )
 
 var buf bytes.Buffer

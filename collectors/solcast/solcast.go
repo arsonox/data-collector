@@ -3,7 +3,8 @@ package solcast
 import (
 	"log"
 	"net/http"
-	"power/storage"
+
+	"github.com/recadra/data-collector/storage"
 )
 
 type Solcast struct {

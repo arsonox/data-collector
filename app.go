@@ -1,10 +1,11 @@
 package main
 
 import (
-	"power/collectors/sunspec"
-	"power/collectors/youless"
-	"power/storage"
 	"time"
+
+	"github.com/recadra/data-collector/collectors/sunspec"
+	"github.com/recadra/data-collector/collectors/youless"
+	"github.com/recadra/data-collector/storage"
 )
 
 type App struct {

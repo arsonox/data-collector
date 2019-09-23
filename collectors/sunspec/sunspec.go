@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"log"
 	"math"
-	"power/storage"
 	"strings"
 	"time"
 
 	"github.com/goburrow/modbus"
+	"github.com/recadra/data-collector/storage"
 )
 
 var buf bytes.Buffer

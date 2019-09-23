@@ -1,9 +1,9 @@
 package main
 
 import (
-	"power/collectors/sunspec"
-	"power/collectors/youless"
-	"power/storage"
+	"github.com/recadra/data-collector/collectors/sunspec"
+	"github.com/recadra/data-collector/collectors/youless"
+	"github.com/recadra/data-collector/storage"
 )
 
 func main() {
