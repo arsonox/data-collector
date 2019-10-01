@@ -7,12 +7,14 @@ import (
 )
 
 type Config struct {
+	InfluxIP   string `config:"INFLUX_IP"`
+	InfluxDB   string `config:"UNFLUX_DB"`
 	UseSunspec bool   `config:"USE_SUNSPEC"`
-	SunspecIp  string `config:"SUNSPEC_IP"`
+	SunspecIP  string `config:"SUNSPEC_IP"`
 	UseYouless bool   `config:"USE_YOULESS"`
-	YoulessIp  string `config:"YOULESS_IP"`
+	YoulessIP  string `config:"YOULESS_IP"`
 	UseSolcast bool   `config:"USE_SOLCAST"`
-	SolcastUrl string `config:"SOLCAST_URL"`
+	SolcastURL string `config:"SOLCAST_URL"`
 }
 
 var cfg Config
@@ -20,7 +22,7 @@ var mux sync.RWMutex
 
 func ReloadConfig() {
 	mux.Lock()
-	config.FromEnv().To(&cfg)
+	config.From("config.env").FromEnv().To(&cfg)
 	mux.Unlock()
 }
 

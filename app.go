@@ -3,23 +3,26 @@ package main
 import (
 	"time"
 
-	"github.com/recadra/data-collector/collectors/sunspec"
-	"github.com/recadra/data-collector/collectors/youless"
 	"github.com/recadra/data-collector/storage"
 )
 
-type App struct {
-	influx *storage.Influx
+type Runner interface {
+	Run(*storage.Influx)
+}
 
-	ss *sunspec.SunSpec
-	yl *youless.Youless
+type App struct {
+	influx  *storage.Influx
+	runners []Runner
 }
 
 func (a *App) Run() {
 	for {
 		now := time.Now()
-		a.yl.Run(a.influx)
-		a.ss.Run(a.influx)
+
+		for _, runner := range a.runners {
+			runner.Run(a.influx)
+		}
+
 		time.Sleep(time.Second - time.Now().Sub(now))
 	}
 }
