@@ -10,17 +10,18 @@ import (
 
 //Data contains the (parsed) data received from the Solcast API
 type Data struct {
-	Forecast []Forecast `json:"forecast"`
+	Forecast []Forecast `json:"forecasts"`
 }
 
 //Forecast is a single forecasted record
 type Forecast struct {
-	Estimate     float64       `json:"pv_estimate"`
-	Estimate10   float64       `json:"pv_estimate10"`
-	Estimate90   float64       `json:"pv_estimate90"`
-	PeriodEnd    time.Time     `json:"period_end"`
-	Period       string        `json:"period"`
-	PeriodParsed time.Duration `json:"-"`
+	Estimate  float64   `json:"pv_estimate"`
+	PeriodEnd time.Time `json:"period_end"`
+
+	//Estimate10   float64       `json:"pv_estimate10"`
+	//Estimate90   float64       `json:"pv_estimate90"`
+	//Period       string        `json:"period"`
+	//PeriodParsed time.Duration `json:"-"`
 }
 
 //NewData creates a SolcastData and parses the data from `data`

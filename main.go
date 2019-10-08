@@ -40,7 +40,7 @@ func main() {
 
 	if cfg.UseSolcast {
 		log.Print("Initializing Solcast...")
-		app.runners = append(app.runners, solcast.NewSolcast(cfg.SolcastURL))
+		app.runners = append(app.runners, solcast.NewSolcast(cfg.SolcastURL, cfg.SolcastKey))
 	}
 
 	if len(app.runners) == 0 {

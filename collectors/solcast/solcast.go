@@ -9,13 +9,18 @@ import (
 
 //Solcast is a connection to the Solcast API
 type Solcast struct {
-	addr string
-	c    uint64
+	addr   string
+	apiKey string
+	c      uint64
 }
 
 //NewSolcast creates a new Solcast to connect to the Solcast API
-func NewSolcast(addr string) *Solcast {
-	return &Solcast{addr, 3 * 60}
+func NewSolcast(addr, apiKey string) *Solcast {
+	return &Solcast{
+		addr:   addr,
+		apiKey: apiKey,
+		c:      3 * 60,
+	}
 }
 
 //Run gets the information from the Solcast API, parses it and
@@ -27,7 +32,14 @@ func (s *Solcast) Run(influx *storage.Influx) {
 		return
 	}
 
-	resp, err := http.Get(s.addr)
+	req, err := http.NewRequest("GET", s.addr, nil)
+	if err != nil {
+		log.Printf("Solcast Request Error: %s\n", err.Error())
+		return
+	}
+	req.Header.Add("Authorization", "Bearer "+s.apiKey)
+
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		log.Printf("Solcast Get Error: %s\n", err.Error())
 		return
@@ -46,4 +58,5 @@ func (s *Solcast) Run(influx *storage.Influx) {
 	}
 	//No error occurred, reset counter
 	s.c = 0
+	log.Printf("Received Solcast data\n")
 }
