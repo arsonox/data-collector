@@ -15,7 +15,7 @@ type Solcast struct {
 
 //NewSolcast creates a new Solcast to connect to the Solcast API
 func NewSolcast(addr string) *Solcast {
-	return &Solcast{addr, 0}
+	return &Solcast{addr, 3 * 60}
 }
 
 //Run gets the information from the Solcast API, parses it and
@@ -29,18 +29,19 @@ func (s *Solcast) Run(influx *storage.Influx) {
 
 	resp, err := http.Get(s.addr)
 	if err != nil {
-		log.Printf("Error: %s\n", err.Error())
+		log.Printf("Solcast Get Error: %s\n", err.Error())
 		return
 	}
 	data, err := NewData(resp.Body)
 	resp.Body.Close()
 	if err != nil {
-		log.Printf("Error: %v\n", err.Error())
+		log.Printf("Solcast NewData Error: %v\n", err.Error())
+		log.Printf("Got status: %v\n", resp.Status)
 		return
 	}
 	err = influx.Send(data.ToInflux())
 	if err != nil {
-		log.Printf("Error: %v\n", err.Error())
+		log.Printf("Solcast ToInflux Error: %v\n", err.Error())
 		return
 	}
 	//No error occurred, reset counter

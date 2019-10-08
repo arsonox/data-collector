@@ -22,6 +22,10 @@ func main() {
 		app.influx = storage.NewInflux(cfg.InfluxIP, cfg.InfluxDB)
 	}
 
+	if cfg.InfluxDummy {
+		app.influx.SetDummy(true)
+	}
+
 	app.runners = make([]Runner, 0)
 
 	if cfg.UseSunspec {
