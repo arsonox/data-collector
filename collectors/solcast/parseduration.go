@@ -1,4 +1,5 @@
 // +build ignore
+
 package solcast
 
 import (
@@ -9,7 +10,7 @@ import (
 
 var durationRegex = regexp.MustCompile(`P([\d\.]+Y)?([\d\.]+M)?([\d\.]+D)?T?([\d\.]+H)?([\d\.]+M)?([\d\.]+?S)?`)
 
-// ParseDuration converts a ISO8601 duration into a time.Duration
+// ParseDuration converts an ISO8601 duration into a time.Duration
 func ParseDuration(str string) time.Duration {
 	matches := durationRegex.FindStringSubmatch(str)
 

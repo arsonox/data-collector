@@ -15,13 +15,16 @@ import (
 
 var buf bytes.Buffer
 
+//SunSpec is a connection to a SunSpec capable device
 type SunSpec struct {
 	handler *modbus.TCPClientHandler
 	ipAddr  string
 	error   bool
 }
 
-type SunSpecTable101 struct {
+//Table101 contains the parsed information found in table 101
+//of the SunSpec specification
+type Table101 struct {
 	Power       float64
 	DCPower     float64
 	Counter     float64
@@ -39,6 +42,7 @@ func (s *SunSpec) init() {
 	s.handler.SlaveId = 1
 }
 
+//NewSunSpec creates a new SunSpec connection to ipAddr
 func NewSunSpec(ipAddr string) *SunSpec {
 	se := &SunSpec{
 		ipAddr: ipAddr,
@@ -47,6 +51,8 @@ func NewSunSpec(ipAddr string) *SunSpec {
 	return se
 }
 
+//Run collects the data from the SunSpec capable device,
+//parses the information and submits it to influx
 func (s *SunSpec) Run(influx *storage.Influx) {
 	client := modbus.NewClient(s.handler)
 	res, err := client.ReadHoldingRegisters(40069, 52)
@@ -64,7 +70,7 @@ func (s *SunSpec) Run(influx *storage.Influx) {
 	}
 	s.error = false
 
-	data := SunSpecTable101{
+	data := Table101{
 		Power:       s.scale(float64(binary.BigEndian.Uint16(res[28:])), int16(binary.BigEndian.Uint16(res[30:]))),
 		DCPower:     s.scale(float64(binary.BigEndian.Uint16(res[62:])), int16(binary.BigEndian.Uint16(res[64:]))),
 		Counter:     s.scale(float64(binary.BigEndian.Uint32(res[48:])), int16(binary.BigEndian.Uint16(res[52:]))),

@@ -14,17 +14,21 @@ import (
 
 var buf bytes.Buffer
 
+//Youless is a connection to a Youless device
 type Youless struct {
-	data YoulessData
+	data Data
 	addr string
 }
 
-type YoulessData struct {
+//Data is part of the data received from the Youless device
+type Data struct {
 	Counter float64 `json:"net"`
 	Power   int64   `json:"pwr"`
 }
 
-func (yd *YoulessData) Parse(b []byte) (err error) {
+//Parse parses part of the data received by the Youless device and
+//saves it into YoulessData
+func (yd *Data) Parse(b []byte) (err error) {
 	s := string(b)
 	if i := strings.Index(s, `"pwr":`); i > 0 {
 		sep := strings.IndexRune(s[i+6:], ',')
@@ -51,12 +55,15 @@ func (yd *YoulessData) Parse(b []byte) (err error) {
 	return nil
 }
 
+//NewYouless creates a new Youless connection to the specified ipAddr
 func NewYouless(ipAddr string) *Youless {
 	return &Youless{
 		addr: "http://" + ipAddr + "/e?f=j",
 	}
 }
 
+//Run receives data from the Youless device, parses the information and
+//submits it to influx
 func (y *Youless) Run(influx *storage.Influx) {
 	resp, err := http.Get(y.addr)
 	if err != nil {

@@ -6,6 +6,7 @@ import (
 	"github.com/JeremyLoy/config"
 )
 
+//Config contains the configuration for the application
 type Config struct {
 	InfluxIP   string `config:"INFLUX_IP"`
 	InfluxDB   string `config:"UNFLUX_DB"`
@@ -20,6 +21,7 @@ type Config struct {
 var cfg Config
 var mux sync.RWMutex
 
+//ReloadConfig reloads the configuration
 func ReloadConfig() {
 	mux.Lock()
 	config.From("config.env").FromEnv().To(&cfg)
@@ -30,6 +32,7 @@ func init() {
 	ReloadConfig()
 }
 
+//GetConfig gets a copy of the current configuration variables
 func GetConfig() Config {
 	mux.RLock()
 	defer mux.RUnlock()
