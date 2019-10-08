@@ -37,7 +37,7 @@ func (sd *Data) ToInflux() *bytes.Buffer {
 
 	for i := range sd.Forecast {
 		fmt.Fprintf(&buf, "current_watt,source=solcast value=%v %v\n",
-			sd.Forecast[i].Estimate,
+			sd.Forecast[i].Estimate*1000,
 			sd.Forecast[i].PeriodEnd.UnixNano())
 	}
 
