@@ -4,9 +4,13 @@
 *.dll
 *.so
 *.dylib
+data-collector
 
 # Test binary, build with `go test -c`
 *.test
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+# The local configuration file
+config.env
