@@ -9,7 +9,9 @@ import (
 //Config contains the configuration for the application
 type Config struct {
 	InfluxIP    string `config:"INFLUX_IP"`
-	InfluxDB    string `config:"UNFLUX_DB"`
+	InfluxDB    string `config:"INFLUX_DB"`
+	InfluxUser  string `config:"INFLUX_USER"`
+	InfluxPass  string `config:"INFLUX_PASS"`
 	InfluxDummy bool   `config:"INFLUX_DUMMY"`
 	UseSunspec  bool   `config:"USE_SUNSPEC"`
 	SunspecIP   string `config:"SUNSPEC_IP"`

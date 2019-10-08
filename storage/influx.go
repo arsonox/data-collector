@@ -13,24 +13,31 @@ type Influx struct {
 	ipPort string
 	db     string
 	dummy  bool
+	user   string
+	pass   string
+	cl     http.Client
 }
 
 //NewDefaultInflux creates a new Influx instance with default settings
 //It assumes ipPort to be "localhost:8086" and db to be "power"
 func NewDefaultInflux() *Influx {
-	return NewInflux("localhost:8086", "power")
+	return NewInflux("localhost:8086", "power", "", "")
 }
 
 //NewInflux creates a new Influx.
 //  ipPort: the server to connect to (format ip:port)
 //  db: the name of the database to use as default database (default "power")
-func NewInflux(ipPort, db string) *Influx {
+//  user: username to use (leave empty for no auth)
+//  pass: password to use (leave empty for no auth)
+func NewInflux(ipPort, db, user, pass string) *Influx {
 	if db == "" {
 		db = "power"
 	}
 	return &Influx{
 		ipPort: ipPort,
 		db:     db,
+		user:   user,
+		pass:   pass,
 	}
 }
 
@@ -59,6 +66,19 @@ func (i *Influx) SendDB(buf io.Reader, db string) error {
 		f.Close()
 		return nil
 	}
-	_, err := http.Post("http://"+i.ipPort+"/write?db="+db, "", buf)
+
+	rq, err := http.NewRequest("POST", "http://"+i.ipPort+"/write?db="+db, buf)
+	if err != nil {
+		return err
+	}
+
+	rq.Header.Set("Content-Type", "application/octet-stream")
+
+	if i.user != "" {
+		rq.SetBasicAuth(i.user, i.pass)
+	}
+
+	//_, err = i.cl.Post("http://"+i.ipPort+"/write?db="+db, "", buf)
+	_, err = i.cl.Do(rq)
 	return err
 }
