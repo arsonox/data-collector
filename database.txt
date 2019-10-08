@@ -2,9 +2,9 @@
 CREATE DATABASE "power"
 CREATE RETENTION POLICY "one_day" ON "power" DURATION 1d REPLICATION 1 DEFAULT
 CREATE RETENTION POLICY "a_year" ON "power" DURATION 1y REPLICATION 1
-CREATE CONTINUOUS QUERY "cq_15m" ON "power" BEGIN
+CREATE CONTINUOUS QUERY "cq_30m" ON "power" BEGIN
   SELECT mean("value") AS "value"
-  INTO "a_year"."downsampled_watt"
+  INTO "a_year"."watt"
   FROM "current_watt"
-  GROUP BY time(15m), "source"
+  GROUP BY time(30m), "source"
 END

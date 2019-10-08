@@ -1,12 +1,12 @@
 [Unit]                                                                                                                                                                                       
-Description=Tracking power production and use                                                                                                                                                
+Description=data collector                                                                                                                                              
 Requires=influxd.service                                                                                                                                                                     
 Wants=network-online.target                                                                                                                                                                  
 After=network-online.target                                                                                                                                                                  
                                                                                                                                                                                              
 [Service]                                                                                                                                                                                    
 Type=simple                                                                                                                                                                                  
-ExecStart=/opt/tools/power                                                                                                                                                                   
+ExecStart=/opt/tools/data-collector                                                                                                                                                                   
                                                                                                                                                                                              
 [Install]                                                                                                                                                                                    
 WantedBy=multi-user.target 
