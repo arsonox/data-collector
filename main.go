@@ -19,7 +19,7 @@ func main() {
 	if cfg.InfluxIP == "" {
 		app.influx = storage.NewDefaultInflux()
 	} else {
-		app.influx = storage.NewInflux(cfg.InfluxIP, cfg.InfluxDB)
+		app.influx = storage.NewInflux(cfg.InfluxIP, cfg.InfluxDB, cfg.InfluxUser, cfg.InfluxPass)
 	}
 
 	if cfg.InfluxDummy {
